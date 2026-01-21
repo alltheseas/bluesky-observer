@@ -69,6 +69,7 @@ Add voluntary sensor reading submission using kind:4223 (per NIP PR #2163 weathe
 
 ### Phase 3: Full PWA
 
+- **Map view** with observation markers
 - Community browsing/discovery
 - Observation detail view with correlations
 - Verification/identification flow
@@ -317,11 +318,68 @@ const ephemeralKey = generateSecretKey()
 
 ---
 
+## Map UI
+
+Base map implementation adapted from [Pathos](https://gitlab.com/soapbox-pub/pathos).
+
+### Technology
+
+| Package | Purpose |
+|---------|---------|
+| react-leaflet | React wrapper for Leaflet |
+| leaflet | Core mapping library |
+| ngeohash | Geohash encoding/decoding |
+
+### Map Tiles
+
+Using CARTO Positron (free, no API key required):
+
+```typescript
+// Light theme
+const TILE_URL = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+// Dark theme
+const TILE_DARK_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+```
+
+### Features
+
+- Theme-aware (light/dark mode)
+- Touch/zoom support for mobile
+- Geolocation with user consent
+- Observation markers with thumbnails
+- Geohash-based clustering at lower zoom levels
+- Click marker to view observation details
+
+### Observation Markers
+
+```
+┌─────────────────────────────────────┐
+│  Individual Marker (zoom ≥ 6)       │
+│  ┌───┐                              │
+│  │ 📷│ ← Thumbnail from blurhash    │
+│  └───┘                              │
+│    │                                │
+│    ▼                                │
+│  Click → Observation detail view    │
+├─────────────────────────────────────┤
+│  Clustered Marker (zoom < 6)        │
+│  ┌───┐                              │
+│  │ 12│ ← Count of observations      │
+│  └───┘                              │
+│    │                                │
+│    ▼                                │
+│  Click → Zoom in / show list        │
+└─────────────────────────────────────┘
+```
+
+---
+
 ## Tech Stack
 
 ### Frontend (PWA)
 - React 18 + TypeScript
 - Vite
+- react-leaflet + leaflet (map)
 - nostr-tools
 - Blossom client (image upload)
 - ngeohash
