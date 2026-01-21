@@ -28,36 +28,42 @@ GeoWatch enables citizen scientists to document and correlate atmospheric phenom
 
 Minimal viable product - a Progressive Web App for voluntary photo submissions of atmospheric phenomena (clouds, contrails, exhaust plumes).
 
-**MVP scope: Photos only.** No sensor/environmental measurements in Phase 1.
+**MVP scope: Photos + Map.** No sensor/environmental measurements in Phase 1.
 
 ```
 ┌─────────────────────────────────────┐
 │ 1. PROJECT SETUP                    │
 │    Vite + React + TypeScript        │
-│    nostr-tools, ngeohash            │
-│    PWA manifest                     │
+│    react-leaflet, nostr-tools       │
+│    ngeohash, PWA manifest           │
 ├─────────────────────────────────────┤
-│ 2. CONSENT SCREEN                   │
+│ 2. MAP VIEW (default screen)        │
+│    Leaflet map with CARTO tiles     │
+│    Show existing observations       │
+│    Click marker → detail view       │
+│    Geohash clustering at low zoom   │
+├─────────────────────────────────────┤
+│ 3. CONSENT SCREEN                   │
 │    First-launch warning             │
 │    "You are sharing photo +         │
 │    location publicly"               │
 ├─────────────────────────────────────┤
-│ 3. CAPTURE SCREEN                   │
+│ 4. CAPTURE SCREEN                   │
 │    Camera (MediaDevices API)        │
 │    Location (Geolocation API)       │
 │    Timestamp (auto)                 │
 │    Optional: observation type,      │
 │    description                      │
 ├─────────────────────────────────────┤
-│ 4. BLOSSOM UPLOAD                   │
+│ 5. BLOSSOM UPLOAD                   │
 │    Upload photo to Blossom server   │
 │    Get URL + SHA256 hash            │
 ├─────────────────────────────────────┤
-│ 5. NOSTR PUBLISH                    │
+│ 6. NOSTR PUBLISH                    │
 │    Generate ephemeral key           │
 │    Publish kind:30383 event         │
 ├─────────────────────────────────────┤
-│ 6. DEPLOY                           │
+│ 7. DEPLOY                           │
 │    Vercel/Netlify (HTTPS required)  │
 │    Test PWA install on mobile       │
 └─────────────────────────────────────┘
@@ -69,7 +75,6 @@ Add voluntary sensor reading submission using kind:4223 (per NIP PR #2163 weathe
 
 ### Phase 3: Full PWA
 
-- **Map view** with observation markers
 - Community browsing/discovery
 - Observation detail view with correlations
 - Verification/identification flow
